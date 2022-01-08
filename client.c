@@ -60,7 +60,7 @@ int main(int argc, char* argv[]){
         Receive_message_client(sock_fd, &m_s, &server_addr);
         update_board(my_win, m_s, prev_ball, prev_paddles);
         key = wgetch(my_win);
-        mvwprintw(message_win, 1,1,"%c key pressed", key);
+        mvwprintw(message_win, 1,1,"%c key pressed\n Player score: %d", key, m_s.score);
         wrefresh(message_win);
         if (key != 113 && (key == KEY_LEFT || key == KEY_RIGHT || key == KEY_UP || key == KEY_DOWN)) {
             m.key = key;
@@ -73,7 +73,8 @@ int main(int argc, char* argv[]){
             break;
         }
     }
-
+    
+    free(prev_paddles);
     close(sock_fd);
     exit(0);
 }
