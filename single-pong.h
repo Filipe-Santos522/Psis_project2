@@ -19,7 +19,6 @@ typedef struct paddle_position_t{
 } paddle_position_t;
 
 typedef struct message_server{
-    int id;
     ball_position_t ball;
     paddle_position_t paddles[MAX_NUMBER_OF_PLAYERS];
 } message_server;

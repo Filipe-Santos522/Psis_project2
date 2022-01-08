@@ -49,16 +49,16 @@ int main(int argc, char* argv[]){
     box(message_win, 0 , 0);	
 	wrefresh(message_win);
 
+
     int key;
     ball_position_t prev_ball;
-    paddle_position_t *prev_paddles = malloc(MAX_NUMBER_OF_PLAYERS*sizeof(paddle_position_t));
+    paddle_position_t *prev_paddles = malloc(MAX_NUMBER_OF_PLAYERS * sizeof(paddle_position_t));
     while (1) {
         prev_ball = m_s.ball;
-        prev_paddles = m_s.paddles;
+        for (int i = 0; i < MAX_NUMBER_OF_PLAYERS; i++)
+            prev_paddles[i] = m_s.paddles[i];
         Receive_message_client(sock_fd, &m_s, &server_addr);
         update_board(my_win, m_s, prev_ball, prev_paddles);
-        mvwprintw(message_win, 1,1,"aqui_1");
-        wrefresh(message_win);	
         key = wgetch(my_win);
         mvwprintw(message_win, 1,1,"%c key pressed", key);
         wrefresh(message_win);
