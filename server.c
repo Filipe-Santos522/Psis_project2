@@ -51,17 +51,25 @@ int main(){
         case 2:
             /* paddle move - update ball on screen */
             Counter++;
-            if (Counter == 10) {
+            if (Counter >= Num_players) {
                 moove_ball(&m.ball);
                 Counter=0;
             }
-                
-
-            for (int i = 0; i < Num_players; i++){
+            int i = 0;
+            for (i = 0; i < Num_players; i++){
                 if (client_addr.sin_addr.s_addr == Players[i].sin_addr.s_addr && client_addr.sin_port == Players[i].sin_port ){
                     moove_paddle(&Players_paddle[i], m_client.key);
+                    m.paddles[0] = Players_paddle[i];
                     break;
                 }
+            }
+            for (int j = 1; j < Num_players; j++){
+                if (j < i)
+                    m.paddles[j] = Players_paddle[j-1];
+                else if (j > i)
+                    m.paddles[j] = Players_paddle[j];
+                else
+                    continue;
             }
             Send_Reply_server(sock_fd, &m, &client_addr);
             printf("sent message\n");
