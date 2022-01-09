@@ -17,9 +17,6 @@ int main(int argc, char* argv[]){
             printf("Error in arguments\n");
             exit(1);
     }
-
-    int nbytes;
-    struct sockaddr_in client_addr;
     
     struct sockaddr_in server_addr;
     server_addr.sin_family = AF_INET;
@@ -27,13 +24,12 @@ int main(int argc, char* argv[]){
     inet_pton(AF_INET, argv[1], &server_addr.sin_addr);
 
     int sock_fd=Socket_creation();
-    ball_position_t x;
     message_client m;
     message_server m_s;
     m.type = 1; /* Set message type to "connect"*/
+    m_s.score = 0;
     Send_Reply_client(sock_fd, &m, &server_addr); /* Send connect message */
 
-    paddle_position_t paddle;
     initscr();		    	/* Start curses mode 		*/
 	cbreak();				/* Line buffering disabled	*/
     keypad(stdscr, TRUE);   /* We get F1, F2 etc..		*/
@@ -60,7 +56,9 @@ int main(int argc, char* argv[]){
         Receive_message_client(sock_fd, &m_s, &server_addr);
         update_board(my_win, m_s, prev_ball, prev_paddles);
         key = wgetch(my_win);
-        mvwprintw(message_win, 1,1,"%c key pressed\n Player score: %d", key, m_s.score);
+        mvwprintw(message_win, 1,1,"%c key pressed", key);
+        wrefresh(message_win);
+        mvwprintw(message_win, 2,1,"Player score: %d", m_s.score);
         wrefresh(message_win);
         if (key != 113 && (key == KEY_LEFT || key == KEY_RIGHT || key == KEY_UP || key == KEY_DOWN)) {
             m.key = key;
@@ -73,7 +71,7 @@ int main(int argc, char* argv[]){
             break;
         }
     }
-    
+    endwin();
     free(prev_paddles);
     close(sock_fd);
     exit(0);

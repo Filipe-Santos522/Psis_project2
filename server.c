@@ -20,12 +20,14 @@ int main(){
     int sock_fd=Socket_creation();
     Socket_identification(sock_fd);
     place_ball_random(&m.ball);
-
+    for (int a = 0; a < MAX_NUMBER_OF_PLAYERS; a++)
+        Players_paddle[a].length = -1;
+    
     //Listening to messages
     while (1){
         Receive_message_server(sock_fd, &m_client, &client_addr);
         printf("received message\n");
-
+        int i = 0;
         switch (m_client.type)
         {
         case 1:
@@ -52,15 +54,15 @@ int main(){
                 moove_ball(&m.ball, Players_paddle, Num_players, Players_score);
                 Counter=0;
             }
-            int i = 0;
-            for (i = 0; i < Num_players; i++){
+    
+            for (i = 0; i < MAX_NUMBER_OF_PLAYERS; i++){
                 if (client_addr.sin_addr.s_addr == Players[i].sin_addr.s_addr && client_addr.sin_port == Players[i].sin_port ){
                     moove_paddle(&Players_paddle[i], Players_paddle, m_client.key, Num_players, i);
                     m.paddles[0] = Players_paddle[i];
                     break;
                 }
             }
-            for (int j = 0; j < Num_players; j++){
+            for (int j = 0; j < MAX_NUMBER_OF_PLAYERS; j++){
                 if (j < i)
                     m.paddles[j+1] = Players_paddle[j];
                 else if (j > i)
@@ -83,7 +85,8 @@ int main(){
             Players[i] = Players[Num_players - 1];
             Players_paddle[i] = Players_paddle[Num_players - 1];
             Players_score[i] = Players_score[Num_players - 1];
-            Players_paddle[Num_players].length = -1;
+            Players_paddle[Num_players - 1].length = -1;
+            Players_score[Num_players - 1] = 0;
             Num_players--;
             break;
         default:

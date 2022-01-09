@@ -27,7 +27,7 @@ void new_paddle(paddle_position_t * paddle, int legth, paddle_position_t *Player
             break;
         y++;
     }
-    paddle->x = rand() % WINDOW_SIZE/2;
+    paddle->x = (rand() % WINDOW_SIZE/2) + 3;
     paddle->y = y;
     paddle->length = legth;
 }
@@ -171,11 +171,20 @@ void update_board(WINDOW* my_win, message_server m, ball_position_t prev_ball, p
     draw_paddle(my_win, &m.paddles[0], true, '=');
 
     int i = 1;
-    while (m.paddles[i].length != -1 || i == MAX_NUMBER_OF_PLAYERS) {
+    while (prev_paddles[i].length > 0 && i < MAX_NUMBER_OF_PLAYERS) {
         draw_paddle(my_win, &prev_paddles[i], false, '_');
+        i++;
+    }
+    i = 1;
+    while (m.paddles[i].length > 0 && i < MAX_NUMBER_OF_PLAYERS) {
         draw_paddle(my_win, &m.paddles[i], true, '_');
         i++;
     }
+/*while (m.paddles[i].length != -1 || i == MAX_NUMBER_OF_PLAYERS) {
+        draw_paddle(my_win, &prev_paddles[i], false, '_');
+        draw_paddle(my_win, &m.paddles[i], true, '_');
+        i++;
+    }*/
 }
 
 

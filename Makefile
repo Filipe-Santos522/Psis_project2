@@ -1,5 +1,5 @@
 # C compiler
-HOST_CC = gcc  -O2
+HOST_CC = gcc  -O0
 
 FLAGS = -Wall -g
 
