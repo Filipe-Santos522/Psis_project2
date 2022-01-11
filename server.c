@@ -41,6 +41,7 @@ int main(){
 
             Num_players++;
             m.paddles[0]=Players_paddle[Num_players-1];
+            m.score=Players_score[Num_players-1];
             for(int i=0; i<Num_players-1; i++){
                 m.paddles[i+1]=Players_paddle[i];
             }
