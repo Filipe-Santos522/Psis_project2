@@ -33,7 +33,7 @@ int main(){
         case 1:
             /* add client to list */
             Players[Num_players]=client_addr;
-            new_paddle(&Players_paddle[Num_players], PADLE_SIZE, Players_paddle, Num_players);
+            new_paddle(&Players_paddle[Num_players], PADLE_SIZE, Players_paddle, Num_players, m.ball);
             Players_score[Num_players]=0;
 
             if(Num_players+1<MAX_NUMBER_OF_PLAYERS)
@@ -41,10 +41,10 @@ int main(){
 
             Num_players++;
             m.paddles[0]=Players_paddle[Num_players-1];
-            m.score=Players_score[Num_players-1];
             for(int i=0; i<Num_players-1; i++){
                 m.paddles[i+1]=Players_paddle[i];
             }
+            m.score = 0;
             Send_Reply_server(sock_fd, &m, &Players[Num_players-1]);
             printf("sent message\n");
             break;
@@ -58,7 +58,7 @@ int main(){
     
             for (i = 0; i < MAX_NUMBER_OF_PLAYERS; i++){
                 if (client_addr.sin_addr.s_addr == Players[i].sin_addr.s_addr && client_addr.sin_port == Players[i].sin_port ){
-                    moove_paddle(&Players_paddle[i], Players_paddle, m_client.key, Num_players, i);
+                    moove_paddle(&Players_paddle[i], Players_paddle, m_client.key, Num_players, i, &m.ball);
                     m.paddles[0] = Players_paddle[i];
                     break;
                 }

@@ -5,22 +5,8 @@
 #include "pong.h"
 #include "single-pong.h"
 
-/*WINDOW * message_win;*/
 
-
-/*typedef struct ball_position_t{
-    int x, y;
-    int up_hor_down; //  -1 up, 0 horizontal, 1 down
-    int left_ver_right; //  -1 left, 0 vertical,1 right
-    char c;
-} ball_position_t;*/
-
-/*typedef struct paddle_position_t{
-    int x, y;
-    int length;
-} paddle_position_t;*/
-
-void new_paddle(paddle_position_t * paddle, int legth, paddle_position_t *Player_paddles, int numPlayers){
+void new_paddle(paddle_position_t * paddle, int legth, paddle_position_t *Player_paddles, int numPlayers, ball_position_t ball){
     int y = 1;
     for (int i = 0; i < numPlayers; i++){
         if (Player_paddles[i].y != y)
@@ -48,9 +34,10 @@ void draw_paddle(WINDOW *win, paddle_position_t * paddle, int delete, char c){
     wrefresh(win);
 }
 
-void moove_paddle (paddle_position_t * paddle, paddle_position_t * paddles, int direction, int numPlayers, int index){
+void moove_paddle (paddle_position_t * paddle, paddle_position_t * paddles, int direction, int numPlayers, int index, ball_position_t *ball){
     int paddle_aux;
     int flag=0;
+    int flag_ball = 0;
 
     if (direction == KEY_UP){
         paddle_aux=paddle->y-1;
@@ -58,8 +45,15 @@ void moove_paddle (paddle_position_t * paddle, paddle_position_t * paddles, int 
             if (paddle_aux == paddles[i].y && (paddles[i].x-paddles[index].x < 5 && paddles[i].x-paddles[index].x > -5))
                 flag=1;
 
-        if (paddle->y  != 1 && flag!=1)
-            paddle->y --;
+        if (paddle->y  != 1 && flag!=1){
+            if (ball->y == paddle->y - 1 && ball->y != 1 && (ball->x - paddle->x < 3 && ball->x - paddle->x > -3)){
+                ball->y--;
+                ball->up_hor_down = -1;
+                paddle->y--;
+            }
+            else if (paddle->y - 1 != ball->y || ball->x - paddle->x >= 3 || ball->x - paddle->x <= -3)
+                paddle->y--;
+        }
     }
 
 
@@ -69,8 +63,15 @@ void moove_paddle (paddle_position_t * paddle, paddle_position_t * paddles, int 
             if (paddle_aux == paddles[i].y && (paddles[i].x-paddles[index].x < 5 && paddles[i].x-paddles[index].x > -5))
                 flag=1;
 
-        if (paddle->y  != WINDOW_SIZE-2 && flag!=1)
-            paddle->y ++;
+        if (paddle->y  != WINDOW_SIZE - 2 && flag!=1){
+            if (ball->y == paddle->y + 1 && ball->y != WINDOW_SIZE - 2 && (ball->x - paddle->x < 3 && ball->x - paddle->x > -3)){
+                ball->y++;
+                ball->up_hor_down = 1;
+                paddle->y++;
+            }
+            else if (paddle->y + 1 != ball->y || ball->x - paddle->x >= 3 || ball->x - paddle->x <= -3)
+                paddle->y++;
+        }
         
     }
     

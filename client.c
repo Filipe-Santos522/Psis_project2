@@ -45,7 +45,6 @@ int main(int argc, char* argv[]){
     box(message_win, 0 , 0);	
 	wrefresh(message_win);
 
-
     int key;
     ball_position_t prev_ball;
     paddle_position_t *prev_paddles = malloc(MAX_NUMBER_OF_PLAYERS * sizeof(paddle_position_t));
