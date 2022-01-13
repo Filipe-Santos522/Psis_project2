@@ -74,18 +74,18 @@ int main(int argc, char* argv[]){
         
         // Check which key was pressed (113 is "q" for quit)
         if (key != 113 && (key == KEY_LEFT || key == KEY_RIGHT || key == KEY_UP || key == KEY_DOWN)) {
-            m.key = key;
-            m.type = 2;
-            Send_Reply_client(sock_fd, &m, &server_addr);
+            m.key = key;  // Change key in message
+            m.type = 2; // Change message type
+            Send_Reply_client(sock_fd, &m, &server_addr); // Send message to server
         }
-        else {
-            m.type = 4;
-            Send_Reply_client(sock_fd, &m, &server_addr);
+        else { // If "q" was pressed
+            m.type = 4; // Change message type to disconnect
+            Send_Reply_client(sock_fd, &m, &server_addr); // Send message to server
             break;
         }
     }
-    endwin();
-    free(prev_paddles);
-    close(sock_fd);
-    exit(0);
+    endwin(); // Close curses
+    free(prev_paddles); // Free array of paddles
+    close(sock_fd); // Close socket
+    exit(0); // Exit program
 }

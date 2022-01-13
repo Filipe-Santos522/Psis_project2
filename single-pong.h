@@ -1,3 +1,9 @@
+/* Pong functions header file:
+ * Original code given by the professors and adapted by:
+ * Filipe Santos - 90068
+ * Alexandre Fonseca - 90210
+ */
+
 #include <stdlib.h>
 #include <ncurses.h>
 
@@ -18,19 +24,22 @@ typedef struct paddle_position_t{
     int length;
 } paddle_position_t;
 
+// Message type sent by the server to the clients
 typedef struct message_server{
-    ball_position_t ball;
-    paddle_position_t paddles[MAX_NUMBER_OF_PLAYERS];
-    int score;
+    ball_position_t ball; // Ball position
+    paddle_position_t paddles[MAX_NUMBER_OF_PLAYERS]; // Paddles of all players
+    int score; // Score of the player that received the message
 } message_server;
 
+// Message type sent by the clients to the server
 typedef struct message_client {
     //Type: 1 - connect, 2 - paddle_move, 4 - disconnect
-    int type;
-    int key;
+    int type; // Message type
+    int key; // Key pressed by the client
 } message_client;
 
 
+// Headers of functions defined in the respective source code file
 void new_paddle (paddle_position_t *, int, paddle_position_t *, int, ball_position_t);
 void draw_paddle(WINDOW *, paddle_position_t *, int, char);
 void moove_paddle (paddle_position_t *, paddle_position_t *, int, int, int, ball_position_t *);

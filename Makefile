@@ -5,6 +5,8 @@ FLAGS = -Wall -g
 
 HOST_CC_FLAGS =  -lncurses
 
+all:  server client
+
 server: server.o single-pong.o Serverfunc.o
 	$(HOST_CC) $(FLAGS) server.o single-pong.o Serverfunc.o -o server $(HOST_CC_FLAGS)
 
