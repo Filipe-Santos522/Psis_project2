@@ -54,11 +54,14 @@ int main(int argc, char* argv[]){
             prev_paddles[i] = m_s.paddles[i];
         Receive_message_client(sock_fd, &m_s, &server_addr);
         update_board(my_win, m_s, prev_ball, prev_paddles);
+        wmove(my_win, 0, 0);
+        wrefresh(my_win);
         key = wgetch(my_win);
         mvwprintw(message_win, 1,1,"%c key pressed", key);
         wrefresh(message_win);
         mvwprintw(message_win, 2,1,"Player score: %d", m_s.score);
         wrefresh(message_win);
+        
         if (key != 113 && (key == KEY_LEFT || key == KEY_RIGHT || key == KEY_UP || key == KEY_DOWN)) {
             m.key = key;
             m.type = 2;
