@@ -72,7 +72,7 @@ int main(int argc, char* argv[]){
         mvwprintw(message_win, 2,1,"Player score: %d", m_s.score); // Print player score
         wrefresh(message_win);
         
-        // Check which key 
+        // Check which key was pressed (113 is "q" for quit)
         if (key != 113 && (key == KEY_LEFT || key == KEY_RIGHT || key == KEY_UP || key == KEY_DOWN)) {
             m.key = key;
             m.type = 2;
