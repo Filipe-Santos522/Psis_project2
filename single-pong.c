@@ -127,8 +127,10 @@ void moove_ball(ball_position_t * ball, paddle_position_t *paddles, int numPlaye
     int next_x = ball->x + ball->left_ver_right;
     int next_y = ball->y + ball->up_hor_down;
 
+    int flag3=0;
     int flag=0;
     int flag2=0;
+    int flag4=0;
     for (int i = 0; i < numPlayers; i++){
         if ((paddles[i].x + 2 >= next_x && paddles[i].x - 2 <= next_x) && paddles[i].y == next_y){
             if(ball->up_hor_down==0){
@@ -140,6 +142,14 @@ void moove_ball(ball_position_t * ball, paddle_position_t *paddles, int numPlaye
         }
     }
 
+    for (int i = 0; i < numPlayers; i++){
+        if (paddles[i].y==ball->y && (paddles[i].x + 2 >= next_x && paddles[i].x - 2 <= next_x)){
+            flag3=1;
+        }
+        if(paddles[i].y==next_y && (paddles[i].x + 2 >= ball->x && paddles[i].x - 2 <= ball->x))
+            flag4=1;
+    }
+
     if( (next_y == 0 || next_y == WINDOW_SIZE-1 || flag == 1) && (next_x == 0 || next_x == WINDOW_SIZE-1 || flag2 == 1)){
         ball->up_hor_down *= -1;
         ball->left_ver_right *= -1;
@@ -148,7 +158,7 @@ void moove_ball(ball_position_t * ball, paddle_position_t *paddles, int numPlaye
         return;
     }
 
-    if( next_x == 0 || next_x == WINDOW_SIZE-1 || flag2 == 1){
+    if( next_x == 0 || next_x == WINDOW_SIZE-1 || flag2 == 1 || flag3==1){
         ball->up_hor_down = rand() % 3 -1 ;
         ball->left_ver_right *= -1;
         mvwprintw(message_win, 2,1,"left right win");
@@ -157,7 +167,7 @@ void moove_ball(ball_position_t * ball, paddle_position_t *paddles, int numPlaye
         ball->x = next_x;
     }
     
-    if( next_y == 0 || next_y == WINDOW_SIZE-1 || flag == 1){
+    if( next_y == 0 || next_y == WINDOW_SIZE-1 || flag == 1 || flag4==1){
         ball->up_hor_down *= -1;
         ball->left_ver_right = rand() % 3 -1;
         mvwprintw(message_win, 2,1,"bottom top win");
